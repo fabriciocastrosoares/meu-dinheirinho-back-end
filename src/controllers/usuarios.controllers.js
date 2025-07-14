@@ -1,16 +1,9 @@
-import { cadastroSchema, db, loginSchema } from "../app.js";
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
-
+import { db } from '../database/database.connection.js';
 
 export async function cadastrarUsuario(req, res) {
     const { nome, email, senha } = req.body;
-
-    const validation = cadastroSchema.validate(req.body, { abortEarly: false });
-    if (validation.error) {
-        const errors = validation.error.details.map((detail) => detail.message);
-        return res.status(422).send(errors);
-    }
 
     try {
         const usuario = await db.collection("usuarios").findOne({ email })
@@ -27,12 +20,6 @@ export async function cadastrarUsuario(req, res) {
 
 export async function login(req, res) {
     const { email, senha } = req.body;
-
-    const validation = loginSchema.validate(req.body, { abortEarly: false });
-    if (validation.error) {
-        const errors = validation.error.details.map((detail) => detail.message);
-        return res.status(422).send(errors);
-    }
 
     try {
         const usuario = await db.collection("usuarios").findOne({ email });
