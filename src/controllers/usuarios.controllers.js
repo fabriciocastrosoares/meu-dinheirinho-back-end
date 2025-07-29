@@ -16,7 +16,7 @@ export async function cadastrarUsuario(req, res) {
     } catch (err) {
         res.status(500).send(err.message);
     }
-}
+};
 
 export async function login(req, res) {
     const { email, senha } = req.body;
@@ -29,10 +29,34 @@ export async function login(req, res) {
         if (!senhaCorreta) return res.status(401).send("Senha incorreta");
 
         const token = uuid();
+        
         await db.collection("sessoes").insertOne({ token, idUsuario: usuario._id });
-        res.status(200).send(token);
+
+        const { senha: _, ...usuarioSemSenha } = usuario;
+
+        res.status(200).send({
+            usuario: usuarioSemSenha,
+            token
+        });
     } catch (err) {
         res.status(500).send(err.message);
     }
 
-}
+};
+export async function logout(req, res) {
+    const sessao = res.locals.sessao;
+
+    try {
+        const resultado = await db.collection("sessoes").deleteOne({ token: sessao.token });
+        if (resultado.deletedCount === 0) {
+            return res.status(400).send("Token não encontrado ou já removido.");
+        }
+
+        res.sendStatus(200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+
+

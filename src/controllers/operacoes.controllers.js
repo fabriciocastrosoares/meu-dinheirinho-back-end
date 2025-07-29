@@ -2,8 +2,7 @@ import { db } from "../database/database.connection.js";
 
 
 export async function cadastroOperacoes(req, res) {
-    const { tipo } = req.params;
-    const { valor, descricao } = req.body;
+    const { valor, descricao, tipo } = req.body;
     const sessao = res.locals.sessao;
 
     if (tipo !== "entrada" && tipo !== "saida") return res.status(422).send("Tipo de transação inválido. Deve ser 'entrada' ou 'saida'.");
@@ -16,7 +15,7 @@ export async function cadastroOperacoes(req, res) {
             valor,
             descricao,
             tipo,
-            data: new Date().toLocaleDateString("pt-BR"),
+            data: new Date().toLocaleDateString("pt-BR", {day: "2-digit", month: "2-digit"}),
             usuarioId: sessao.idUsuario
         };
 
@@ -26,7 +25,7 @@ export async function cadastroOperacoes(req, res) {
     } catch (err) {
         res.status(500).send(err.message);
     }
-}
+};
 
 export async function pegarOperacoes(req, res) {
     const sessao = res.locals.sessao;
@@ -39,4 +38,4 @@ export async function pegarOperacoes(req, res) {
         res.status(500).send(err.message);
     }
 
-}
+};

@@ -7,7 +7,7 @@ import { autenticar } from "../middlewares/auth.middleware.js";
 const operacoesRouter = Router();
 
 operacoesRouter.use(autenticar)
-operacoesRouter.post("/operacoes/:tipo", validacaoSchema(transacaoSchema), cadastroOperacoes);
+operacoesRouter.post("/operacoes", validacaoSchema(transacaoSchema), cadastroOperacoes);
 operacoesRouter.get("/operacoes", pegarOperacoes);
 
 export default operacoesRouter;
