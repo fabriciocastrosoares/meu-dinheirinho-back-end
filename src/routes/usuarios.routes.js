@@ -2,7 +2,7 @@ import { Router } from "express";
 import { cadastrarUsuario, login, logout } from "../controllers/usuarios.controllers.js";
 import { validacaoSchema } from "../middlewares/validateSchema.middleware.js";
 import { cadastroSchema, loginSchema } from "../schemas/usuarios.schema.js";
-import { autenticar } from "../middlewares/auth.middleware.js";
+import { autenticar } from "../middlewares/authValidate.middleware.js";
 
 const usuariosRouter = Router();
 

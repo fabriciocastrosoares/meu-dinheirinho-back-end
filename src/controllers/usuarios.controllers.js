@@ -50,7 +50,7 @@ export async function logout(req, res) {
         const resultado = await db.collection("sessoes").deleteOne({ token: sessao.token });
         if (resultado.deletedCount === 0) {
             return res.status(400).send("Token não encontrado ou já removido.");
-        }
+        };
 
         res.sendStatus(200);
     } catch (err) {
